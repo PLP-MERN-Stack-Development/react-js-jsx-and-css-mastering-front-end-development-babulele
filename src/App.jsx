@@ -1,71 +1,132 @@
 import { useState } from 'react';
-import './App.css';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Layout from './components/Layout';
+import Button from './components/Button';
+import Card from './components/Card';
+import Tasks from './pages/Tasks';
+import APIData from './pages/APIData';
+import { ThemeProvider } from './context/ThemeContext';
 
-// Import your components here
-// import Button from './components/Button';
-// import Navbar from './components/Navbar';
-// import Footer from './components/Footer';
-// import TaskManager from './components/TaskManager';
-
-function App() {
+function Home() {
   const [count, setCount] = useState(0);
 
   return (
-    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
-      {/* Navbar component will go here */}
-      <header className="bg-white dark:bg-gray-800 shadow">
-        <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-          <h1 className="text-3xl font-bold">PLP Task Manager</h1>
-        </div>
-      </header>
+    <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 animate-fade-in">
+      <div className="text-center mb-8 animate-slide-down">
+        <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+          Welcome to Task Manager
+        </h1>
+        <p className="text-lg text-gray-600 dark:text-gray-400">
+          Manage your tasks efficiently with our modern React application
+        </p>
+      </div>
 
-      <main className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-        <div className="bg-white dark:bg-gray-800 overflow-hidden shadow rounded-lg p-6">
-          <div className="flex flex-col items-center justify-center">
-            <p className="text-lg mb-4">
-              Edit <code className="font-mono bg-gray-200 dark:bg-gray-700 p-1 rounded">src/App.jsx</code> and save to test HMR
-            </p>
-            
-            <div className="flex items-center gap-4 my-4">
-              <button
-                onClick={() => setCount((count) => count - 1)}
-                className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition-colors"
-              >
-                -
-              </button>
-              <span className="text-xl font-bold">{count}</span>
-              <button
-                onClick={() => setCount((count) => count + 1)}
-                className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-colors"
-              >
-                +
-              </button>
-            </div>
-
-            <p className="text-gray-500 dark:text-gray-400 mt-4">
-              Implement your TaskManager component here
-            </p>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+        {/* Button Examples */}
+        <Card hover>
+          <h3 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">
+            Button Variants
+          </h3>
+          <div className="space-y-3">
+            <Button variant="primary" className="w-full">
+              Primary Button
+            </Button>
+            <Button variant="secondary" className="w-full">
+              Secondary Button
+            </Button>
+            <Button variant="danger" className="w-full">
+              Danger Button
+            </Button>
+            <Button variant="success" className="w-full">
+              Success Button
+            </Button>
           </div>
-        </div>
-        
-        {/* API data display will go here */}
-        <div className="mt-8 bg-white dark:bg-gray-800 overflow-hidden shadow rounded-lg p-6">
-          <h2 className="text-2xl font-bold mb-4">API Data</h2>
-          <p className="text-gray-500 dark:text-gray-400">
-            Fetch and display data from an API here
-          </p>
-        </div>
-      </main>
+        </Card>
 
-      {/* Footer component will go here */}
-      <footer className="bg-white dark:bg-gray-800 shadow mt-auto">
-        <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-          <p className="text-center text-gray-500 dark:text-gray-400">
-            © {new Date().getFullYear()} PLP Task Manager. All rights reserved.
-          </p>
-        </div>
-      </footer>
+        {/* Counter Example */}
+        <Card hover>
+          <h3 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">
+            Interactive Counter
+          </h3>
+          <div className="flex flex-col items-center">
+            <span className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+              {count}
+            </span>
+            <div className="flex gap-2">
+              <Button
+                variant="danger"
+                onClick={() => setCount(count - 1)}
+                disabled={count === 0}
+              >
+                Decrease
+              </Button>
+              <Button
+                variant="success"
+                onClick={() => setCount(count + 1)}
+              >
+                Increase
+              </Button>
+            </div>
+          </div>
+        </Card>
+
+        {/* Button Sizes */}
+        <Card hover>
+          <h3 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">
+            Button Sizes
+          </h3>
+          <div className="space-y-3">
+            <Button variant="primary" size="sm" className="w-full">
+              Small
+            </Button>
+            <Button variant="primary" size="md" className="w-full">
+              Medium
+            </Button>
+            <Button variant="primary" size="lg" className="w-full">
+              Large
+            </Button>
+          </div>
+        </Card>
+      </div>
+
+      {/* Instructions */}
+      <Card>
+        <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">
+          Get Started
+        </h2>
+        <p className="text-gray-600 dark:text-gray-400">
+          Navigate to different sections to see the TaskManager component and API integration features.
+        </p>
+      </Card>
     </div>
+  );
+}
+
+function App() {
+  const navbarLinks = [
+    { path: '/', label: 'Home' },
+    { path: '/tasks', label: 'Tasks' },
+    { path: '/api', label: 'API Data' },
+  ];
+
+  const footerLinks = [
+    { path: '/', label: 'Home' },
+    { path: '/tasks', label: 'Tasks' },
+    { path: '/api', label: 'API Data' },
+  ];
+
+  return (
+    <ThemeProvider>
+      <Router>
+        <Layout navbarLinks={navbarLinks} footerLinks={footerLinks}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/tasks" element={<Tasks />} />
+            <Route path="/api" element={<APIData />} />
+          </Routes>
+        </Layout>
+      </Router>
+    </ThemeProvider>
   );
 }
 
